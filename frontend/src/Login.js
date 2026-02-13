@@ -1,65 +1,102 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Gamepad2, ArrowLeft, Eye } from "lucide-react";
+import { Gamepad2, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import "./App.css";
 
 export default function Login({ onSuccess }) {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
-    // In a real app, you would verify email/password with backend here.
-    // For now, we simulate a successful login.
-    if(onSuccess) {
-        onSuccess(); // This tells App.js "User is logged in!"
-    }
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (onSuccess) onSuccess(); 
     navigate("/dashboard");
   };
 
   return (
     <div className="auth-container">
-      {/* Left Side (Blue/Green Gradient) */}
-      <div className="auth-left blue-theme">
+      {/* LEFT SIDE: Teal Gradient Background */}
+      <div className="auth-left teal-theme">
+        {/* Logo at absolute top-left */}
         <div className="auth-brand">
           <Gamepad2 size={32} /> VidyaQuest
         </div>
-        <h1 className="auth-title">Continue Your <br/> Learning Adventure!</h1>
-        <p className="auth-desc">Pick up where you left off. Your progress, badges, and achievements are waiting for you.</p>
         
-        <div className="stats-mini-row">
-           <div className="mini-stat">
-             <strong>500+</strong><span>Active Learners</span>
-           </div>
-           <div className="mini-stat">
-             <strong>10K+</strong><span>Lessons Done</span>
-           </div>
+        {/* Content Wrapper to create gap from logo */}
+        <div className="auth-left-content">
+            <h1 className="auth-title">
+              Continue Your <br/> Learning Adventure!
+            </h1>
+            
+            <p className="auth-desc">
+              Pick up where you left off. Your progress, badges, and achievements are waiting for you.
+            </p>
+           
+            {/* Stats Boxes */}
+            <div className="stats-mini-row">
+               <div className="mini-stat">
+                 <strong>500+</strong>
+                 <span>Active Learners</span>
+               </div>
+               <div className="mini-stat">
+                 <strong>10K+</strong>
+                 <span>Lessons Done</span>
+               </div>
+            </div>
         </div>
       </div>
 
-      {/* Right Side (Form) */}
+      {/* RIGHT SIDE: Login Form */}
       <div className="auth-right">
-        <div className="back-link" onClick={() => navigate("/")}>
-          <ArrowLeft size={16} /> Back to Home
+        {/* Back Link */}
+        <div style={{ width: '100%', maxWidth: '400px', marginBottom: '1rem' }}>
+            <div className="back-link" onClick={() => navigate("/")}>
+                <ArrowLeft size={16} /> Back to Home
+            </div>
         </div>
 
         <div className="auth-form-box">
-          <h2>Welcome Back!</h2>
-          <p className="form-sub">Sign in to continue your learning adventure</p>
+          <h2 style={{marginBottom:'0.5rem'}}>Welcome Back!</h2>
+          <p className="form-sub" style={{marginBottom:'2rem'}}>Sign in to continue your learning adventure</p>
 
-          <label>Email</label>
-          <input type="email" placeholder="your@email.com" className="input-field" />
+          <form onSubmit={handleLogin}>
+              <label>Email</label>
+              <input type="email" placeholder="your@email.com" className="input-field" required />
 
-          <label>Password</label>
-          <div style={{position:'relative'}}>
-             <input type="password" placeholder="........" className="input-field" />
-             <Eye size={18} style={{position:'absolute', right:'15px', top:'15px', opacity:0.5}} />
-          </div>
-          
-          <div style={{textAlign:'right', fontSize:'0.9rem', color:'#0d9488', marginBottom:'20px', cursor:'pointer'}}>Forgot Password?</div>
+              {/* Password Section */}
+              <label style={{marginTop:'1.2rem'}}>Password</label>
+              <div style={{position:'relative'}}>
+                 <input 
+                    type={showPassword ? "text" : "password"} 
+                    placeholder="........" 
+                    className="input-field" 
+                    required 
+                 />
+                 <div 
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                        position:'absolute', 
+                        right:'15px', 
+                        top:'14px', 
+                        cursor:'pointer',
+                        color: '#94a3b8'
+                    }}
+                 >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                 </div>
+              </div>
 
-          <button className="btn-auth blue-btn" onClick={handleLogin}>Sign In</button>
+              {/* Forgot Password - MOVED HERE (Under Input, Right Aligned) */}
+              <span className="forgot-pass-link">Forgot Password?</span>
 
-          <div style={{marginTop:'20px', textAlign:'center', fontSize:'0.9rem'}}>
-            Don't have an account? <span style={{color:'#0d9488', fontWeight:'bold', cursor:'pointer'}} onClick={() => navigate("/signup")}>Sign Up</span>
+              {/* Sign In Button */}
+              <button type="submit" className="btn-auth btn-teal" style={{marginTop:'2rem'}}>
+                  Sign In
+              </button>
+          </form>
+
+          <div className="auth-link" style={{marginTop: '1.5rem', textAlign: 'center', fontSize:'0.95rem', color:'#64748b'}}>
+            Don't have an account? <span style={{color: '#10b981', fontWeight: 'bold', cursor: 'pointer'}} onClick={() => navigate("/signup")}>Sign Up</span>
           </div>
         </div>
       </div>

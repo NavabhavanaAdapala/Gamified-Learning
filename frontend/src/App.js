@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 // Icons
-import { 
-  Gamepad2, Trophy, Star, Zap, Sparkles, 
-  WifiOff, Languages, Bot, Calculator, Atom, 
-  Monitor, Globe, BookOpen, Palette, Lock, Dumbbell,
-  Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin,
-  X, MessageCircle, ChevronDown
+import {
+  Gamepad2, Globe, ChevronDown, User, LogOut, LayoutDashboard, UserCircle,
+  X, BookOpen, Trophy, Star, TrendingUp, Zap, ChevronRight, ChevronLeft,
+  WifiOff, Languages, Bot, Calculator, Atom, Monitor, Palette, Lock, Dumbbell,
+  Mail, Phone, MapPin, MessageCircle
 } from 'lucide-react';
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 // Components
 import Login from "./Login";
 import Signup from "./Signup";
-import Dashboard from "./components/Dashboard"; // This is your logged-in Subjects page
+import Dashboard from "./components/Dashboard"; 
 import Chatbot from "./components/Chatbot";
 import { translations } from "./translations"; 
 
@@ -22,12 +21,15 @@ export default function App() {
   const [language, setLanguage] = useState("English");
   const [showLangMenu, setShowLangMenu] = useState(false);
   
-  // --- NEW: Authentication State ---
-  // We check if the user is logged in (you can use localStorage or a real auth check)
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  // --- AUTH STATE ---
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  // --- DEMO MODAL STATE ---
+  const [showDemo, setShowDemo] = useState(false); // Controls the popup
 
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
 
   const t = translations[language]; 
   const languages = ["English", "Hindi", "Telugu"];
@@ -39,6 +41,12 @@ export default function App() {
     } else {
       navigate("/login");
     }
+  };
+
+  const handleLogout = () => {
+     setIsLoggedIn(false);
+     setShowProfileMenu(false);
+     navigate("/");
   };
 
   const isHomePage = location.pathname === "/";
@@ -54,15 +62,9 @@ export default function App() {
             <div className="logo"><Gamepad2 size={36} /> VidyaQuest</div>
             
             <div className="nav-links">
-              {/* Home stays as is */}
               <span onClick={() => navigate("/")}>{t.nav.home}</span>
-              
-              {/* SUBJECTS: Checks if logged in */}
               <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.subjects}</span>
-              
-              {/* GAMES: Checks if logged in */}
               <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.games}</span>
-              
               <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.leaderboard}</span>
             </div>
 
@@ -83,29 +85,56 @@ export default function App() {
                 )}
               </div>
 
-              {/* Toggle Buttons based on login status */}
+              {/* Login/Signup Buttons */}
               {!isLoggedIn ? (
                 <>
                   <span className="signin-link" onClick={() => navigate("/login")}>{t.nav.signin}</span>
                   <button className="btn-primary" onClick={() => navigate("/signup")}>{t.nav.signup}</button>
                 </>
               ) : (
-                 <button className="btn-primary" onClick={() => navigate("/dashboard")}>Go to Dashboard</button>
+                <div style={{position:'relative'}}>
+                    <button className="btn-user" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+                       <User size={18}/> srija <ChevronDown size={14}/>
+                    </button>
+                    
+                    {/* DROPDOWN MENU */}
+                    {showProfileMenu && (
+                       <div className="profile-menu" style={{
+                          position: 'absolute', top: '120%', right: 0, background: 'white', width: '200px',
+                          borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', border: '1px solid #f1f5f9',
+                          overflow: 'hidden', zIndex: 1000
+                       }}>
+                          <div className="menu-item" onClick={() => {navigate("/dashboard"); setShowProfileMenu(false);}} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer'}}>
+                             <UserCircle size={18}/> Profile
+                          </div>
+                          <div className="menu-item" onClick={() => {navigate("/dashboard"); setShowProfileMenu(false);}} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer'}}>
+                             <LayoutDashboard size={18}/> Dashboard
+                          </div>
+                          <div className="menu-item danger" onClick={handleLogout} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer', color: '#ef4444', borderTop: '1px solid #f1f5f9'}}>
+                             <LogOut size={18}/> Sign Out
+                          </div>
+                       </div>
+                    )}
+                 </div>
               )}
             </div>
           </nav>
-
-          {/* ... (Your existing Hero, Why Choose Us, Explore Subjects, CTA sections here - NO CHANGE NEEDED) ... */}
-          {/* Just for brevity, I'm hiding the middle sections in this snippet, but KEEP them in your file! */}
+        
+          {/* 2. Hero Section */}
           <header className="hero-section">
-            {/* ... Keep your existing Hero code ... */}
             <span className="grade-badge">{t.hero.badge}</span>
             <h1 className="hero-title">{t.hero.title1} <br /><span style={{color:'#3b82f6'}}>{t.hero.title2}</span></h1>
             <p className="hero-subtitle">{t.hero.subtitle}</p>
+            
             <div style={{display:'flex', justifyContent:'center', gap:'1rem'}}>
               <button className="btn-primary" onClick={() => navigate("/signup")}>{t.hero.btnStart}</button>
-              <button className="btn-secondary">{t.hero.btnDemo}</button>
+              
+              {/* --- WATCH DEMO BUTTON: Opens Modal --- */}
+              <button className="btn-secondary" onClick={() => setShowDemo(true)}>
+                 {t.hero.btnDemo}
+              </button>
             </div>
+
              <div className="stats-row">
               <div className="stat-card"><span className="stat-num">10K+</span>{t.hero.stat1}</div>
               <div className="stat-card"><span className="stat-num">500+</span>{t.hero.stat2}</div>
@@ -113,6 +142,7 @@ export default function App() {
             </div>
           </header>
 
+          {/* 3. Why Choose Us */}
           <section className="section-container">
             <h2 className="section-header">{t.why.title}</h2>
             <div className="features-grid">
@@ -123,6 +153,7 @@ export default function App() {
             </div>
           </section>
 
+          {/* 4. Explore Subjects */}
           <section className="section-container" style={{background:'#f8fafc'}}>
             <h2 className="section-header">{t.subjects.title}</h2>
             <div className="subjects-grid">
@@ -146,6 +177,7 @@ export default function App() {
             </div>
           </section>
 
+          {/* 5. CTA Section */}
           <section className="cta-section">
              <div className="cta-badge">{t.cta.badge}</div>
              <h2 className="cta-title">{t.cta.title}</h2>
@@ -153,6 +185,7 @@ export default function App() {
              <button className="btn-white" onClick={() => navigate("/signup")}>{t.cta.btn}</button>
           </section>
 
+          {/* 6. Footer */}
           <footer className="footer">
              <div className="footer-grid">
                 <div>
@@ -186,13 +219,13 @@ export default function App() {
         </div>
       )}
 
+      {/* --- DEMO MODAL POPUP (Appears when showDemo is true) --- */}
+      {showDemo && <DemoModal onClose={() => setShowDemo(false)} />}
+
       {/* --- ROUTES --- */}
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
-        
-        {/* Pass setIsLoggedIn to Login so it can update the state upon success */}
         <Route path="/login" element={<Login onSuccess={() => { setIsLoggedIn(true); navigate("/dashboard"); }} />} />
-        
         <Route path="/signup" element={<Signup onSuccess={() => navigate("/login")} />} />
       </Routes>
     </div>
@@ -210,7 +243,6 @@ function FeatureCard({ icon, color, title, text }) {
   );
 }
 
-// Updated SubjectCard to accept onClick
 function SubjectCard({ t, title, count, icon, color, xp, progress, stars, btnColor, onCardClick }) {
   return (
     <div className={`subject-card ${color}`} onClick={onCardClick} style={{cursor: 'pointer'}}>
@@ -234,4 +266,98 @@ function SubjectCard({ t, title, count, icon, color, xp, progress, stars, btnCol
       </div>
     </div>
   );
+}
+
+// --- DEMO MODAL COMPONENT (THE SLIDESHOW) ---
+function DemoModal({ onClose }) {
+   const [slide, setSlide] = useState(0);
+
+   const slides = [
+      {
+         icon: <BookOpen size={48} color="white"/>,
+         bg: '#10b981', // Green
+         title: "Choose Your Subject",
+         desc: "Pick from 8+ subjects including Math, Science, English, Hindi & more. Each subject has curated quizzes designed for grades 6-12."
+      },
+      {
+         icon: <Gamepad2 size={48} color="white"/>,
+         bg: '#f97316', // Orange
+         title: "Take Fun Quizzes",
+         desc: "Answer multiple-choice questions with instant feedback. Get detailed explanations in English, Hindi & Telugu!"
+      },
+      {
+         icon: <Trophy size={48} color="white"/>,
+         bg: '#3b82f6', // Blue
+         title: "Earn XP & Level Up",
+         desc: "Complete quizzes to earn XP points. Level up and unlock achievements as you learn!"
+      },
+      {
+         icon: <Star size={48} color="white"/>,
+         bg: '#eab308', // Yellow
+         title: "Track Your Progress",
+         desc: "See your scores, streak days, and performance stats. Know exactly where you stand!"
+      },
+      {
+         icon: <TrendingUp size={48} color="white"/>,
+         bg: '#8b5cf6', // Purple
+         title: "Compete on Leaderboard",
+         desc: "Compare your scores with other students. Climb the ranks and become a top learner!"
+      },
+      {
+         icon: <Zap size={48} color="white"/>,
+         bg: '#ec4899', // Pink
+         title: "AI-Powered Help",
+         desc: "Stuck on a topic? Our AI chatbot is here to help you understand concepts better!"
+      }
+   ];
+
+   const nextSlide = () => {
+      if (slide < slides.length - 1) setSlide(slide + 1);
+      else onClose(); // Close on last slide
+   };
+
+   const prevSlide = () => {
+      if (slide > 0) setSlide(slide - 1);
+   };
+
+   return (
+      <div className="modal-overlay">
+         <div className="demo-modal">
+            <button className="btn-close-modal" onClick={onClose}><X size={24}/></button>
+            
+            <div className="slide-content">
+               {/* Icon Circle */}
+               <div className="slide-icon-box" style={{background: slides[slide].bg}}>
+                  {slides[slide].icon}
+               </div>
+               
+               <h2>{slides[slide].title}</h2>
+               <p>{slides[slide].desc}</p>
+            </div>
+
+            {/* Pagination Dots */}
+            <div className="slide-dots">
+               {slides.map((_, idx) => (
+                  <div key={idx} className={`dot ${idx === slide ? 'active' : ''}`}></div>
+               ))}
+            </div>
+
+            {/* Controls */}
+            <div className="slide-controls">
+               <button 
+                  className="btn-slide-nav text-only" 
+                  onClick={prevSlide} 
+                  style={{visibility: slide === 0 ? 'hidden' : 'visible'}}
+               >
+                  <ChevronLeft size={16}/> Back
+               </button>
+
+               <button className="btn-slide-nav primary" onClick={nextSlide}>
+                  {slide === slides.length - 1 ? "Get Started" : "Next"} 
+                  {slide !== slides.length - 1 && <ChevronRight size={16}/>}
+               </button>
+            </div>
+         </div>
+      </div>
+   );
 }

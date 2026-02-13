@@ -70,7 +70,7 @@ export default function Signup() {
           <button className="btn-auth orange-btn" onClick={() => navigate("/login")}>Create Account</button>
 
           {/* Added the Link Here */}
-          <div style={{marginTop:'25px', textAlign:'center', fontSize:'1rem', paddingBottom: '20px'}}>
+          <div style={{marginTop:'25px',marginBottom:'25px', textAlign:'center', fontSize:'1rem', paddingBottom: '70px'}}>
             Already have an account? <span style={{color:'#f97316', fontWeight:'bold', cursor:'pointer'}} onClick={() => navigate("/login")}>Sign In</span>
           </div>
         </div>
