@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
+
 // Icons
 import {
   Gamepad2, Globe, ChevronDown, User, LogOut, LayoutDashboard, UserCircle,
   X, BookOpen, Trophy, Star, TrendingUp, Zap, ChevronRight, ChevronLeft,
   WifiOff, Languages, Bot, Calculator, Atom, Monitor, Palette, Lock, Dumbbell,
-  Mail, Phone, MapPin, MessageCircle
+  Mail, Phone, MapPin
 } from 'lucide-react';
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
@@ -13,11 +14,11 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
 import Dashboard from "./components/Dashboard"; 
+import Profile from "./components/Profile";
 import Chatbot from "./components/Chatbot";
 import { translations } from "./translations"; 
 
 export default function App() {
-  const [showChat, setShowChat] = useState(false);
   const [language, setLanguage] = useState("English");
   const [showLangMenu, setShowLangMenu] = useState(false);
   
@@ -104,8 +105,8 @@ export default function App() {
                           borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', border: '1px solid #f1f5f9',
                           overflow: 'hidden', zIndex: 1000
                        }}>
-                          <div className="menu-item" onClick={() => {navigate("/dashboard"); setShowProfileMenu(false);}} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer'}}>
-                             <UserCircle size={18}/> Profile
+                          <div className="menu-item" onClick={() => { navigate("/profile"); setShowProfileMenu(false); }}>
+                          <UserCircle size={18} /> Profile
                           </div>
                           <div className="menu-item" onClick={() => {navigate("/dashboard"); setShowProfileMenu(false);}} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer'}}>
                              <LayoutDashboard size={18}/> Dashboard
@@ -207,27 +208,17 @@ export default function App() {
           </footer>
         </>
       )}
-
-      {/* --- Chatbot (Global) --- */}
-      <div className="chatbot-float-btn" onClick={() => setShowChat(!showChat)}>
-        {showChat ? <X size={30} /> : <MessageCircle size={30} />}
-      </div>
-      {showChat && (
-        <div className="chatbot-window">
-          <div className="chatbot-header"><span>Vidya AI Tutor</span><X style={{cursor:'pointer'}} onClick={() => setShowChat(false)}/></div>
-          <div className="chatbot-content"><Chatbot /></div>
-        </div>
-      )}
-
       {/* --- DEMO MODAL POPUP (Appears when showDemo is true) --- */}
       {showDemo && <DemoModal onClose={() => setShowDemo(false)} />}
 
       {/* --- ROUTES --- */}
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login onSuccess={() => { setIsLoggedIn(true); navigate("/dashboard"); }} />} />
         <Route path="/signup" element={<Signup onSuccess={() => navigate("/login")} />} />
-      </Routes>
+       </Routes>
+       <Chatbot/>
     </div>
   );
 }

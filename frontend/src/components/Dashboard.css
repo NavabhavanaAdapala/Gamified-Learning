@@ -1,0 +1,176 @@
+/* frontend/src/components/Dashboard.css */
+.dashboard-wrapper {
+ width: 100%;             /* Use 100% of the screen width */
+  min-height: 100vh;
+  padding: 0;              /* Remove wrapper padding */
+  margin: 0;               /* Remove margins */
+  background-color: #f8fafc;
+  display: flex;
+  flex-direction: column;     /* Prevent horizontal scrolling */
+}
+
+/* Header Section */
+.dashboard-top-nav,
+.hero-stats-banner,
+.dashboard-nav-tabs,
+.stats-cards-grid,
+.dashboard-chart-card {
+  width: 92%;              /* Controls the inner width like the reference */
+  max-width: 1400px;       /* Prevents it from getting too wide on huge monitors */
+  margin-left: auto;
+  margin-right: auto;
+}
+.user-welcome h1 { font-size: 1.8rem; margin: 0; color: #1e293b; }
+.user-welcome p { color: #64748b; margin-top: 5px; }
+.nav-action-btns { display: flex; gap: 10px; }
+.btn-secondary {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Hero Banner Gradient */
+.hero-stats-banner {
+  margin-top: 20px;
+  padding: 40px;           /* Increased padding for the wide look */
+  border-radius: 24px;
+  background: linear-gradient(135deg, #2dd4bf, #3b82f6); /* Teal to Blue gradient */
+}
+
+.level-box {
+  width: 65px;
+  height: 65px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.hero-main-info { flex: 1; }
+.hero-label-row { display: flex; justify-content: space-between; margin-bottom: 12px; }
+.hero-progress-bg { height: 10px; background: rgba(255, 255, 255, 0.25); border-radius: 10px; }
+.hero-progress-bar { height: 100%; background: #2dd4bf; border-radius: 10px; }
+.hero-quick-metrics { display: flex; gap: 30px; }
+.metric strong { display: block; font-size: 1.3rem; }
+
+/* Navigation Tabs */
+.dashboard-nav-tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 5px;
+}
+.tab-item {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #64748b;
+  border-radius: 10px;
+}
+.tab-item.active { background: white; color: #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+/* Stats Grid Cards */
+.stats-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.stat-card-item {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.stat-icon-wrap { padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 10px; }
+.stat-icon-wrap.green { background: #f0fdf4; color: #22c55e; }
+.stat-icon-wrap.blue { background: #eff6ff; color: #3b82f6; }
+.stat-icon-wrap.purple { background: #faf5ff; color: #a855f7; }
+.stat-icon-wrap.orange { background: #fffbeb; color: #f59e0b; }
+.stat-card-val { display: block; font-size: 2.2rem; font-weight: 800; color: #0f172a; }
+.stat-card-lab { color: #64748b; font-weight: 600; font-size: 0.9rem; }
+/* Dashboard.css footer layout */
+.footer-content {
+  display: flex;                /* Makes the columns sit side-by-side */
+  justify-content: space-between; /* Spreads them across the width */
+  flex-wrap: wrap;              /* Allows wrapping on small screens */
+  gap: 40px;                    /* Adds space between columns */
+  max-width: 1200px;            /* Centers the footer content */
+  margin: 0 auto;               /* Centers the footer content */
+  padding: 0 20px;
+}
+
+.footer-brand {
+  flex: 2;                      /* Makes the brand section slightly wider */
+  min-width: 250px;
+}
+
+.footer-links {
+  flex: 1;                      /* Equal width for the link columns */
+  min-width: 150px;
+}
+
+.footer-links ul {
+  list-style: none;             /* Removes bullet points */
+  padding: 0;
+}
+/* Dashboard.css - Navbar Styles */
+.main-nav {
+  background: white;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 1400px; /* Adjust to match your project's max width */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f1f5f9;
+  border-radius: 20px;
+}
