@@ -436,3 +436,227 @@ body { margin: 0; font-family: 'Quicksand', sans-serif; background-color: #f8faf
   text-decoration: none;
 }
 .forgot-pass-link:hover { text-decoration: underline; }
+/* --- Footer Styles --- */
+.site-footer {
+  background-color: #1e293b; /* Dark Navy Blue */
+  color: #94a3b8;
+  padding: 4rem 2rem 1rem;
+  margin-top: auto; /* Pushes footer to bottom */
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-col h4 { color: white; margin-bottom: 1.2rem; }
+.footer-links { list-style: none; padding: 0; }
+.footer-links li { margin-bottom: 0.8rem; cursor: pointer; transition: color 0.2s; }
+.footer-links li:hover { color: #2dd4bf; }
+
+.contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 0.8rem; }
+.footer-bottom { text-align: center; border-top: 1px solid #334155; padding-top: 1.5rem; font-size: 2rem; }
+
+/* --- Contact Page Styles --- */
+/* --- Contact Page Styles --- */
+.contact-page { padding: 4rem 2rem; background: #f8fafc; min-height: 80vh; }
+.contact-header { text-align: center; margin-bottom: 3rem; }
+.contact-header h1 { font-size: 3rem; color: #0f172a; margin-bottom: 0.5rem; }
+.contact-header p { color: #64748b; font-size: 1.2rem; }
+
+.contact-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+}
+
+.contact-form-card { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; color: #334155; }
+.form-group input, .form-group textarea {
+  width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; box-sizing: border-box;
+}
+.btn-submit {
+  width: 100%; background: #10b981; color: white; padding: 1rem; border: none; 
+  border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.btn-submit:hover { background: #059669; }
+
+.info-card {
+  background: white; padding: 1.5rem; border-radius: 15px; display: flex; gap: 1rem; 
+  margin-bottom: 1rem; border: 1px solid #f1f5f9;
+}
+.info-icon { color: #10b981; background: #d1fae5; padding: 10px; border-radius: 50%; height: fit-content; display: flex; }
+.info-card h4 { margin: 0 0 0.2rem 0; color: #334155; }
+.info-card p { margin: 0; color: #64748b; font-size: 0.95rem; }
+.info-card-green { background: #ecfdf5; border: 1px solid #10b981; }
+.contact-intro { color: #475569; margin-bottom: 2rem; line-height: 1.6; }
+
+.contact-form-card { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+.form-group input, .form-group textarea {
+  width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit;
+}
+.btn-submit {
+  width: 100%; background: #10b981; color: white; padding: 1rem; border: none; 
+  border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; gap: 0.5rem;
+}
+
+.info-card {
+  background: white; padding: 1.5rem; border-radius: 15px; display: flex; gap: 1rem; 
+  margin-bottom: 1rem; border: 1px solid #f1f5f9;
+}
+.info-icon { color: #10b981; background: #d1fae5; padding: 10px; border-radius: 50%; height: fit-content; }
+.info-card h4 { margin: 0 0 0.2rem 0; color: #334155; }
+.info-card p { margin: 0; color: #64748b; font-size: 0.95rem; }
+.info-card-green { background: #ecfdf5; border: 1px solid #10b981; }
+/* --- Help Center Styles --- */
+.help-center-page {
+  padding: 4rem 2rem;
+  background: #f8fafc;
+  min-height: 80vh;
+}
+
+.help-center-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.help-center-header h1 {
+  font-size: 3rem;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.help-center-header p {
+  color: #64748b;
+  font-size: 1.25rem;
+}
+
+.help-center-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.faq-section {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+}
+
+.faq-section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-icon {
+  padding: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.faq-section-header h2 {
+  font-size: 1.5rem;
+  color: #334155;
+  margin: 0;
+  font-weight: 700;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  cursor: pointer;
+  font-weight: 600;
+  color: #334155;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+
+.faq-question:hover {
+  color: #0d9488;
+}
+
+.faq-answer {
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.faq-answer-content {
+  padding-bottom: 1.5rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.faq-item.open .faq-question {
+    color: #0d9488;
+}
+
+.contact-support-section {
+    max-width: 900px;
+    margin: 4rem auto 0;
+    text-align: center;
+}
+
+.contact-support-card {
+    background: #ecfdf5;
+    padding: 3rem;
+    border-radius: 20px;
+    border: 1px solid #d1fae5;
+}
+
+.contact-support-card h2 {
+    font-size: 1.8rem;
+    color: #065f46;
+    margin-bottom: 1rem;
+}
+
+.contact-support-card p {
+    color: #047857;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}

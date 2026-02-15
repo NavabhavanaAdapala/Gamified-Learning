@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState } from "react";
 import "./App.css";
 
@@ -16,26 +17,27 @@ import Signup from "./Signup";
 import Dashboard from "./components/Dashboard"; 
 import Profile from "./components/Profile";
 import Chatbot from "./components/Chatbot";
-import { translations } from "./translations"; 
+import Lesson from "./components/Lesson";
+import Quiz from "./components/Quiz";
+import Contact from "./components/contact";
+import Footer from "./components/footer"; 
+import HelpCenter from "./components/Helpcenter"; 
+import { translations } from "./translations";
 
 export default function App() {
+  const [view, setView] = useState("home"); 
+  const [currentLesson, setCurrentLesson] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [language, setLanguage] = useState("English");
   const [showLangMenu, setShowLangMenu] = useState(false);
-  
-  // --- AUTH STATE ---
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-
-  // --- DEMO MODAL STATE ---
-  const [showDemo, setShowDemo] = useState(false); // Controls the popup
+  const [showDemo, setShowDemo] = useState(false); 
 
   const navigate = useNavigate();
   const location = useLocation();
-
   const t = translations[language]; 
   const languages = ["English", "Hindi", "Telugu"];
 
-  // Helper to handle navigation
   const handleProtectedClick = (destination) => {
     if (isLoggedIn) {
       navigate(destination);
@@ -51,77 +53,82 @@ export default function App() {
   };
 
   const isHomePage = location.pathname === "/";
+  const isContactPage = location.pathname === "/contact";
+  const isHelpCenterPage = location.pathname === "/help-center"; 
+  const showGlobalLayout = isHomePage || isContactPage || isHelpCenterPage; 
 
   return (
     <div className="app-root">
       
-      {/* ==================== HOME PAGE LAYOUT ==================== */}
-      {isHomePage && (
-        <>
-          {/* 1. Navbar */}
-          <nav className="navbar">
-            <div className="logo"><Gamepad2 size={36} /> VidyaQuest</div>
-            
-            <div className="nav-links">
-              <span onClick={() => navigate("/")}>{t.nav.home}</span>
-              <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.subjects}</span>
-              <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.games}</span>
-              <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.leaderboard}</span>
-            </div>
+      {/* ==================== GLOBAL NAVBAR ==================== */}
+      {showGlobalLayout && (
+        <nav className="navbar">
+          <div className="logo" onClick={() => navigate("/")} style={{cursor: 'pointer'}}>
+            <Gamepad2 size={36} /> VidyaQuest
+          </div>
+          
+          <div className="nav-links">
+            <span onClick={() => navigate("/")}>{t.nav.home}</span>
+            <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.subjects}</span>
+            <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.games}</span>
+            {/* Added Leaderboard Back */}
+            <span onClick={() => handleProtectedClick("/dashboard")}>{t.nav.leaderboard}</span>
+            <span onClick={() => navigate("/contact")}>Contact Us</span>
+          </div>
 
-            <div className="auth-buttons">
-              {/* Language Selector */}
-              <div style={{position: 'relative'}}>
-                <button className="btn-lang" onClick={() => setShowLangMenu(!showLangMenu)}>
-                  <Globe size={18} /> {language} <ChevronDown size={14} />
-                </button>
-                {showLangMenu && (
-                  <div className="lang-dropdown">
-                    {languages.map(lang => (
-                      <div key={lang} className="lang-option" onClick={() => { setLanguage(lang); setShowLangMenu(false); }}>
-                        {lang}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Login/Signup Buttons */}
-              {!isLoggedIn ? (
-                <>
-                  <span className="signin-link" onClick={() => navigate("/login")}>{t.nav.signin}</span>
-                  <button className="btn-primary" onClick={() => navigate("/signup")}>{t.nav.signup}</button>
-                </>
-              ) : (
-                <div style={{position:'relative'}}>
-                    <button className="btn-user" onClick={() => setShowProfileMenu(!showProfileMenu)}>
-                       <User size={18}/> srija <ChevronDown size={14}/>
-                    </button>
-                    
-                    {/* DROPDOWN MENU */}
-                    {showProfileMenu && (
-                       <div className="profile-menu" style={{
-                          position: 'absolute', top: '120%', right: 0, background: 'white', width: '200px',
-                          borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', border: '1px solid #f1f5f9',
-                          overflow: 'hidden', zIndex: 1000
-                       }}>
-                          <div className="menu-item" onClick={() => { navigate("/profile"); setShowProfileMenu(false); }}>
-                          <UserCircle size={18} /> Profile
-                          </div>
-                          <div className="menu-item" onClick={() => {navigate("/dashboard"); setShowProfileMenu(false);}} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer'}}>
-                             <LayoutDashboard size={18}/> Dashboard
-                          </div>
-                          <div className="menu-item danger" onClick={handleLogout} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer', color: '#ef4444', borderTop: '1px solid #f1f5f9'}}>
-                             <LogOut size={18}/> Sign Out
-                          </div>
-                       </div>
-                    )}
-                 </div>
+          <div className="auth-buttons">
+            <div style={{position: 'relative'}}>
+              <button className="btn-lang" onClick={() => setShowLangMenu(!showLangMenu)}>
+                <Globe size={18} /> {language} <ChevronDown size={14} />
+              </button>
+              {showLangMenu && (
+                <div className="lang-dropdown">
+                  {languages.map(lang => (
+                    <div key={lang} className="lang-option" onClick={() => { setLanguage(lang); setShowLangMenu(false); }}>
+                      {lang}
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-          </nav>
-        
-          {/* 2. Hero Section */}
+
+            {!isLoggedIn ? (
+              <>
+                <span className="signin-link" onClick={() => navigate("/login")}>{t.nav.signin}</span>
+                <button className="btn-primary" onClick={() => navigate("/signup")}>{t.nav.signup}</button>
+              </>
+            ) : (
+              <div style={{position:'relative'}}>
+                  <button className="btn-user" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+                     <User size={18}/> srija <ChevronDown size={14}/>
+                  </button>
+                  
+                  {showProfileMenu && (
+                     <div className="profile-menu" style={{
+                        position: 'absolute', top: '120%', right: 0, background: 'white', width: '200px',
+                        borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', border: '1px solid #f1f5f9',
+                        overflow: 'hidden', zIndex: 1000
+                     }}>
+                        <div className="menu-item" onClick={() => { navigate("/profile"); setShowProfileMenu(false); }}>
+                        <UserCircle size={18} /> Profile
+                        </div>
+                        <div className="menu-item" onClick={() => {navigate("/dashboard"); setShowProfileMenu(false);}} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer'}}>
+                           <LayoutDashboard size={18}/> Dashboard
+                        </div>
+                        <div className="menu-item danger" onClick={handleLogout} style={{padding: '12px 20px', display: 'flex', gap: '10px', cursor: 'pointer', color: '#ef4444', borderTop: '1px solid #f1f5f9'}}>
+                           <LogOut size={18}/> Sign Out
+                        </div>
+                     </div>
+                  )}
+               </div>
+            )}
+          </div>
+        </nav>
+      )}
+      
+      {/* ==================== HOME PAGE CONTENT ==================== */}
+      {isHomePage && (
+        <>
           <header className="hero-section">
             <span className="grade-badge">{t.hero.badge}</span>
             <h1 className="hero-title">{t.hero.title1} <br /><span style={{color:'#3b82f6'}}>{t.hero.title2}</span></h1>
@@ -129,8 +136,6 @@ export default function App() {
             
             <div style={{display:'flex', justifyContent:'center', gap:'1rem'}}>
               <button className="btn-primary" onClick={() => navigate("/signup")}>{t.hero.btnStart}</button>
-              
-              {/* --- WATCH DEMO BUTTON: Opens Modal --- */}
               <button className="btn-secondary" onClick={() => setShowDemo(true)}>
                  {t.hero.btnDemo}
               </button>
@@ -143,7 +148,6 @@ export default function App() {
             </div>
           </header>
 
-          {/* 3. Why Choose Us */}
           <section className="section-container">
             <h2 className="section-header">{t.why.title}</h2>
             <div className="features-grid">
@@ -154,7 +158,6 @@ export default function App() {
             </div>
           </section>
 
-          {/* 4. Explore Subjects */}
           <section className="section-container" style={{background:'#f8fafc'}}>
             <h2 className="section-header">{t.subjects.title}</h2>
             <div className="subjects-grid">
@@ -178,52 +181,69 @@ export default function App() {
             </div>
           </section>
 
-          {/* 5. CTA Section */}
           <section className="cta-section">
              <div className="cta-badge">{t.cta.badge}</div>
              <h2 className="cta-title">{t.cta.title}</h2>
              <p className="cta-sub">{t.cta.subtitle}</p>
              <button className="btn-white" onClick={() => navigate("/signup")}>{t.cta.btn}</button>
           </section>
-
-          {/* 6. Footer */}
-          <footer className="footer">
-             <div className="footer-grid">
-                <div>
-                   <div className="logo" style={{color:'white', marginBottom:'1.5rem'}}><Gamepad2 /> VidyaQuest</div>
-                   <p style={{lineHeight:'1.6', opacity:0.8}}>{t.footer.desc}</p>
-                </div>
-                <div><h4>{t.footer.links}</h4><ul><li>{t.subjects.title}</li><li>{t.nav.games}</li><li>{t.nav.leaderboard}</li></ul></div>
-                <div><h4>{t.footer.support}</h4><ul><li>{t.footer.contact}</li></ul></div>
-                <div>
-                  <h4>{t.footer.contact}</h4>
-                  <ul style={{opacity:0.9}}>
-                    <li style={{display:'flex', gap:'10px', alignItems:'center'}}><Mail size={16}/> contact@vidyaquest.edu</li>
-                    <li style={{display:'flex', gap:'10px', alignItems:'center'}}><Phone size={16}/> +91 1234 567 890</li>
-                    <li style={{display:'flex', gap:'10px', alignItems:'center'}}><MapPin size={16}/> Govt of Odisha</li>
-                  </ul>
-                </div>
-             </div>
-             <div className="copyright">{t.footer.rights}</div>
-          </footer>
         </>
       )}
-      {/* --- DEMO MODAL POPUP (Appears when showDemo is true) --- */}
-      {showDemo && <DemoModal onClose={() => setShowDemo(false)} />}
 
-      {/* --- ROUTES --- */}
+      {/* ==================== ROUTES ==================== */}
       <Routes>
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/help-center" element={<HelpCenter />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login onSuccess={() => { setIsLoggedIn(true); navigate("/dashboard"); }} />} />
         <Route path="/signup" element={<Signup onSuccess={() => navigate("/login")} />} />
-       </Routes>
-       <Chatbot/>
+      </Routes>
+
+      {/* ==================== GLOBAL FOOTER ==================== */}
+      {showGlobalLayout && (
+        <footer className="footer">
+            <div className="footer-grid">
+              <div>
+                  <div className="logo" style={{color:'white', marginBottom:'1.5rem'}}><Gamepad2 /> VidyaQuest</div>
+                  <p style={{lineHeight:'1.6', opacity:0.8}}>{t.footer.desc}</p>
+              </div>
+              <div>
+                <h4>{t.footer.links}</h4>
+                <ul>
+                  <li onClick={() => navigate("/dashboard")} style={{cursor:'pointer'}}>{t.subjects.title}</li>
+                  <li onClick={() => navigate("/dashboard")} style={{cursor:'pointer'}}>{t.nav.games}</li>
+                  <li onClick={() => navigate("/dashboard")} style={{cursor:'pointer'}}>{t.nav.leaderboard}</li>
+                </ul>
+              </div>
+              <div>
+                <h4>{t.footer.support}</h4>
+                <ul>
+                  <li onClick={() => navigate("/help-center")} style={{cursor:'pointer'}}>Help Center</li> 
+                  <li onClick={() => navigate("/contact")} style={{cursor:'pointer'}}>{t.footer.contact}</li>
+                </ul>
+              </div>
+              <div>
+                <h4>{t.footer.contact}</h4>
+                <ul style={{opacity:0.9}}>
+                  <li style={{display:'flex', gap:'10px', alignItems:'center'}}><Mail size={16}/> contact@vidyaquest.edu</li>
+                  <li style={{display:'flex', gap:'10px', alignItems:'center'}}><Phone size={16}/> +91 1234 567 890</li>
+                  <li style={{display:'flex', gap:'10px', alignItems:'center'}}><MapPin size={16}/> Govt of Odisha</li>
+                </ul>
+              </div>
+            </div>
+            <div className="copyright">{t.footer.rights}</div>
+        </footer>
+      )}
+
+      {showDemo && <DemoModal onClose={() => setShowDemo(false)} />}
+      
+      <Chatbot/>
     </div>
   );
 }
 
-// --- HELPER COMPONENTS ---
+// ... (Keep your FeatureCard, SubjectCard, and DemoModal components exactly as they are) ...
 function FeatureCard({ icon, color, title, text }) {
   return (
     <div className="feature-card">
@@ -259,7 +279,6 @@ function SubjectCard({ t, title, count, icon, color, xp, progress, stars, btnCol
   );
 }
 
-// --- DEMO MODAL COMPONENT (THE SLIDESHOW) ---
 function DemoModal({ onClose }) {
    const [slide, setSlide] = useState(0);
 
@@ -304,7 +323,7 @@ function DemoModal({ onClose }) {
 
    const nextSlide = () => {
       if (slide < slides.length - 1) setSlide(slide + 1);
-      else onClose(); // Close on last slide
+      else onClose(); 
    };
 
    const prevSlide = () => {
@@ -317,7 +336,6 @@ function DemoModal({ onClose }) {
             <button className="btn-close-modal" onClick={onClose}><X size={24}/></button>
             
             <div className="slide-content">
-               {/* Icon Circle */}
                <div className="slide-icon-box" style={{background: slides[slide].bg}}>
                   {slides[slide].icon}
                </div>
@@ -326,14 +344,12 @@ function DemoModal({ onClose }) {
                <p>{slides[slide].desc}</p>
             </div>
 
-            {/* Pagination Dots */}
             <div className="slide-dots">
                {slides.map((_, idx) => (
                   <div key={idx} className={`dot ${idx === slide ? 'active' : ''}`}></div>
                ))}
             </div>
 
-            {/* Controls */}
             <div className="slide-controls">
                <button 
                   className="btn-slide-nav text-only" 
