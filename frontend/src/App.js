@@ -14,13 +14,14 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 // Components
 import Login from "./Login";
 import Signup from "./Signup";
-import Dashboard from "./components/Dashboard"; 
+import Dashboard from "./components/Dashboard";
+import Header from "./components/Header";
 import Profile from "./components/Profile";
 import Chatbot from "./components/Chatbot";
 import Lesson from "./components/Lesson";
 import Quiz from "./components/Quiz";
 import Contact from "./components/contact";
-import Footer from "./components/footer"; 
+import Footer from "./components/Footer"; 
 import HelpCenter from "./components/Helpcenter"; 
 import { translations } from "./translations";
 
@@ -51,12 +52,12 @@ export default function App() {
      setShowProfileMenu(false);
      navigate("/");
   };
-
+  
   const isHomePage = location.pathname === "/";
   const isContactPage = location.pathname === "/contact";
   const isHelpCenterPage = location.pathname === "/help-center"; 
   const showGlobalLayout = isHomePage || isContactPage || isHelpCenterPage; 
-
+  const showDashboardHeader = !showGlobalLayout && location.pathname !== "/login" && location.pathname !== "/signup";
   return (
     <div className="app-root">
       
@@ -124,6 +125,9 @@ export default function App() {
             )}
           </div>
         </nav>
+      )}
+      {showDashboardHeader && (
+          <Header />
       )}
       
       {/* ==================== HOME PAGE CONTENT ==================== */}

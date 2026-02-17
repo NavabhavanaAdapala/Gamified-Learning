@@ -1,94 +1,122 @@
-/* frontend/src/components/Profile.js */
-import React, { useState, useEffect } from 'react';
-import '../Profile.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { User, Edit, LogOut, Trophy, Zap, Flame, BookOpen, Award, X } from "lucide-react";
+import Footer from "./Footer"; 
+import "../App.css";
 
-export default function Profile() {
-  const [user, setUser] = useState(null);
+const Profile = () => {
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false); // Controls Modal
+  
+  const [userData, setUserData] = useState({
+    name: "Srija",
+    email: "srija@gmail.com",
+    grade: "Grade 10",
+    school: "Govt High School",
+    xp: 402, streak: 0, quizzes: 9, avgScore: "76%"
+  });
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser && storedUser !== "undefined") {
-      setUser(JSON.parse(storedUser));
-    } else {
-      setUser({
-        fullName: "Guest User",
-        email: "guest@vidyaquest.com",
-        level: 1, xp: 0, nextXp: 500
-      });
-    }
-  }, []);
+  // Modal Form State
+  const [editForm, setEditForm] = useState(userData);
 
-  if (!user) return <div className="loading">Loading...</div>;
-
-  const progressPercent = (user.xp / user.nextXp) * 100;
+  const handleSave = () => {
+    setUserData(editForm);
+    setIsEditing(false); // Close Modal
+  };
 
   return (
-    <div className="profile-page-wrapper">
-      {/* HEADER WITH GREEN BANNER */}
-      <div className="profile-header-card">
-        <div className="profile-banner-gradient"></div>
-        <div className="profile-info-row">
-          <div className="profile-avatar-large">
-            <div className="avatar-icon">
-              {user.fullName.charAt(0).toUpperCase()}
+    <div className="page-wrapper">
+      
+      {/* --- Edit Profile Modal (Overlay) --- */}
+      {isEditing && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Edit Profile</h3>
+              <X className="close-icon" onClick={() => setIsEditing(false)} />
             </div>
-          </div>
-          <div className="profile-user-details">
-            <h1>{user.fullName}</h1>
-            <p>VidyaQuest Learner • {user.email}</p>
-          </div>
-          <div className="profile-actions">
-            <button className="edit-btn">✏️ Edit Profile</button>
-            <button className="signout-btn" onClick={() => {localStorage.clear(); window.location.href='/login'}}>
-              📤 Sign Out
-            </button>
-          </div>
-        </div>
-      </div>
+            <div className="modal-body">
+              <label>Full Name</label>
+              <input type="text" value={editForm.name} onChange={(e) => setEditForm({...editForm, name:e.target.value})} />
+              
+              <label>Grade</label>
+              <select value={editForm.grade} onChange={(e) => setEditForm({...editForm, grade:e.target.value})}>
+                <option>Grade 9</option>
+                <option>Grade 10</option>
+                <option>Grade 11</option>
+                <option>Grade 12</option>
+              </select>
 
-      <div className="profile-stats-grid">
-        {/* LEVEL PROGRESS CARD */}
-        <div className="profile-section-card">
-          <div className="section-header">
-            <span className="icon">🏆</span> <h3>Level Progress</h3>
-          </div>
-          <div className="level-card-content">
-            <div className="level-badge">{user.level}</div>
-            <div className="level-details">
-              <div className="level-text">
-                Level {user.level} <span>{user.xp} / {user.nextXp} XP</span>
-              </div>
-              <div className="progress-bar-container">
-                <div className="progress-fill" style={{ width: `${progressPercent}%` }}></div>
-              </div>
-              <p className="xp-left">{user.nextXp - user.xp} XP until Level {user.level + 1}</p>
+              <label>School Name</label>
+              <input type="text" value={editForm.school} onChange={(e) => setEditForm({...editForm, school:e.target.value})} />
+            </div>
+            <div className="modal-footer">
+              <button className="btn-cancel" onClick={() => setIsEditing(false)}>Cancel</button>
+              <button className="btn-save" onClick={handleSave}>Save Changes</button>
             </div>
           </div>
         </div>
+      )}
 
-        {/* BADGES CARD */}
-        <div className="profile-section-card">
-          <div className="section-header">
-            <span className="icon">🏅</span> <h3>Badges</h3>
-          </div>
-          <div className="badges-empty">
-             <div className="badge-placeholder">🎖️</div>
-             <p>Complete quizzes to earn badges!</p>
+      {/* --- Main Profile Content --- */}
+      <div className="dashboard-container">
+        
+        {/* Header Card */}
+        <div className="profile-header-card">
+          <div className="profile-banner"></div>
+          <div className="profile-info-row">
+            <div className="profile-avatar-box">
+              <User size={64} color="#10b981" />
+            </div>
+            <div className="profile-text">
+              <h1 className="profile-name">{userData.name}</h1>
+              <p className="profile-subtext">{userData.grade} • {userData.email}</p>
+            </div>
+            <div className="profile-buttons">
+              <button className="btn-edit" onClick={() => setIsEditing(true)}>
+                <Edit size={16} /> Edit Profile
+              </button>
+              <button className="btn-signout" onClick={() => navigate("/login")}>
+                <LogOut size={16} /> Sign Out
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* RECENT ACTIVITY SECTION */}
-      <div className="profile-section-card activity-full">
-        <div className="section-header">
-           <span className="icon">📖</span> <h3>Recent Activity</h3>
+        {/* Dashboard Grid */}
+        <div className="dashboard-grid">
+          <div className="card level-card">
+             <div className="card-header"><Trophy color="#10b981" size={20}/> <h3>Level Progress</h3></div>
+             <div className="level-row">
+               <div className="level-box">1</div>
+               <div className="progress-container">
+                  <div className="progress-meta"><span>Level 1</span><span>{userData.xp} / 500 XP</span></div>
+                  <div className="progress-track"><div className="progress-fill" style={{width: '80%'}}></div></div>
+                  <small>98 XP until Level 2</small>
+               </div>
+             </div>
+          </div>
+          <div className="card badges-card">
+             <div className="card-header"><Award color="#10b981" size={20}/> <h3>Badges</h3></div>
+             <div className="badges-content">
+                <Award size={40} color="#cbd5e1"/>
+                <p>Complete quizzes to earn badges!</p>
+             </div>
+          </div>
         </div>
-        <div className="activity-empty">
-           <div className="activity-icon-placeholder">📖</div>
-           <p>No quizzes completed yet</p>
-           <button className="start-btn" onClick={() => window.location.href='/dashboard'}>Start Learning</button>
+
+        {/* Stats Grid */}
+        <div className="stats-row">
+           <div className="d-card stat-c"><Zap color="#10b981" size={28}/><div><h2>{userData.xp}</h2><p>Total XP</p></div></div>
+           <div className="d-card stat-c"><Flame color="#f97316" size={28}/><div><h2>{userData.streak}</h2><p>Day Streak</p></div></div>
+           <div className="d-card stat-c"><BookOpen color="#3b82f6" size={28}/><div><h2>{userData.quizzes}</h2><p>Quizzes Done</p></div></div>
+           <div className="d-card stat-c"><Award color="#10b981" size={28}/><div><h2>{userData.avgScore}</h2><p>Avg Score</p></div></div>
         </div>
+
       </div>
+      <Footer onNavigate={(path) => navigate(`/${path}`)} />
     </div>
   );
-}
+};
+
+export default Profile;
