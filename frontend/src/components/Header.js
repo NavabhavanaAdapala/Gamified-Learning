@@ -7,7 +7,10 @@ import '../App.css'; // Ensure CSS is imported
 const Header = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [user, setUser] = useState({ name: "Student", email: "" });
+  const [user, setUser] = useState({ 
+  name: localStorage.getItem("userName") || "Student", 
+  email: localStorage.getItem("userEmail") || "" 
+});
 
 // 1. Fetch Dynamic User Data on Load
   useEffect(() => {
@@ -58,7 +61,7 @@ const Header = () => {
             onClick={() => setShowDropdown(!showDropdown)}
           >
             <User size={18} />
-            <span className="user-name">{user.name}</span> {/* DYNAMIC NAME */}
+            <span className="user-name">{user.name}</span>{/* DYNAMIC NAME */}
             <ChevronDown size={14} />
           </button>
 

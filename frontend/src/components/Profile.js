@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Edit, LogOut, Award } from "lucide-react";
-import Footer from "./footer";
+import Footer from "./footer"; // Keep your footer
 import "../App.css";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
 
-  // 1. DYNAMIC STATE
+  // 1. Initial State starts with your original placeholder values
   const [userData, setUserData] = useState({
-    name: "Srija", // Placeholder
+    name: "Srija",
     email: "srija@gmail.com",
     grade: "Grade 10",
-    xp: 1402
+    school: "Govt High School",
+    xp: 1402, 
+    streak: 0, 
+    quizzes: 9, 
+    avgScore: "76%"
   });
 
-  // 2. LOAD REAL DATA (Praveen)
+  // 2. Load REAL data from memory immediately
   useEffect(() => {
     const name = localStorage.getItem("userName");
     const email = localStorage.getItem("userEmail");
@@ -41,7 +45,7 @@ const Profile = () => {
     <div className="page-wrapper">
       <div className="dashboard-container">
         
-        {/* --- THE HEADER (Exact original design) --- */}
+        {/* --- EXACT HEADER FROM YOUR 2ND PIC --- */}
         <div className="profile-header-card">
           <div className="profile-banner"></div>
           <div className="profile-info-row">
@@ -50,8 +54,11 @@ const Profile = () => {
             </div>
             
             <div className="profile-text">
+              {/* This is now Dynamic */}
               <h1 className="profile-name">{userData.name}</h1>
-              <p className="profile-subtext">{userData.grade} • {userData.email}</p>
+              <p className="profile-subtext">
+                {userData.grade} • {userData.email}
+              </p>
             </div>
 
             <div className="profile-buttons">
@@ -65,7 +72,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* --- LEVEL PROGRESS (Fixed the squashed bar) --- */}
+        {/* --- LEVEL PROGRESS SECTION --- */}
         <div className="card level-card" style={{marginTop: '2rem'}}>
           <div className="card-header">
             <Award color="#10b981" size={20} /> <h3>Level Progress</h3>
@@ -73,8 +80,8 @@ const Profile = () => {
           <div className="level-box">
             <div className="progress-container">
               <div className="progress-meta">
-                <span>1</span>
-                <span>Level {userData.xp} / 500 XP</span>
+                <span>Level 1</span>
+                <span>{userData.xp} / 500 XP</span>
               </div>
               <div className="progress-track">
                 <div className="progress-fill" style={{ width: '80%' }}></div>
@@ -84,20 +91,20 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* --- BADGES (Exact original design) --- */}
+        {/* --- BADGES SECTION --- */}
         <div className="card badges-card">
           <div className="card-header">
             <Award color="#10b981" size={20} /> <h3>Badges</h3>
           </div>
           <div className="badges-content">
-             <div className="empty-badges">
-                <Award size={40} color="#cbd5e1" />
-                <p>Complete quizzes to earn badges!</p>
-             </div>
+             <Award size={40} color="#cbd5e1" />
+             <p>Complete quizzes to earn badges!</p>
           </div>
         </div>
 
       </div>
+
+      {/* Footer stays at the bottom */}
       <Footer onNavigate={(path) => navigate(`/${path}`)} />
     </div>
   );

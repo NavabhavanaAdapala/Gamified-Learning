@@ -29,7 +29,7 @@ export default function Login({ onSuccess }) {
             if (data.user && data.user.name) {
                 localStorage.setItem('userName', data.user.name);
             } else {
-                localStorage.setItem('userName', 'Student');
+                localStorage.setItem('userEmail', data.user.email);
             }
             
             alert("Login Successful!");

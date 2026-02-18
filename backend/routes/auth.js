@@ -82,5 +82,25 @@ router.post('/login', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+// Update Profile Route
+router.put('/update-profile', async (req, res) => {
+    try {
+        // 1. Get the user ID from the token (Middleware needed here usually)
+        // If you don't have middleware yet, pass email in body to find user
+        const { email, name } = req.body;
 
+        // 2. Find User in DB and Update Name
+        const updatedUser = await User.findOneAndUpdate(
+            { email: email }, // Find by email
+            { name: name },   // Set new name
+            { new: true }     // Return the updated user
+        );
+
+        if (!updatedUser) return res.status(404).json({ message: "User not found" });
+
+        res.json({ message: "Success", user: updatedUser });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 module.exports = router;

@@ -28,6 +28,7 @@ import { translations } from "./translations";
 export default function App() {
   const [view, setView] = useState("home"); 
   const [currentLesson, setCurrentLesson] = useState(null);
+const userName = localStorage.getItem("userName") || "Student";
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
   const [language, setLanguage] = useState("English");
   const [showLangMenu, setShowLangMenu] = useState(false);
@@ -101,7 +102,7 @@ export default function App() {
             ) : (
               <div style={{position:'relative'}}>
                   <button className="btn-user" onClick={() => setShowProfileMenu(!showProfileMenu)}>
-                     <User size={18}/> srija <ChevronDown size={14}/>
+                     <User size={18}/> {userName} <ChevronDown size={14}/>
                   </button>
                   
                   {showProfileMenu && (
