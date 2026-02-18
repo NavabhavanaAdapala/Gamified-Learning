@@ -57,7 +57,8 @@ const userName = localStorage.getItem("userName") || "Student";
   const isHomePage = location.pathname === "/";
   const isContactPage = location.pathname === "/contact";
   const isHelpCenterPage = location.pathname === "/help-center"; 
-  const showGlobalLayout = isHomePage || isContactPage || isHelpCenterPage; 
+  //const showGlobalLayout = isHomePage || isContactPage || isHelpCenterPage; 
+  const showGlobalLayout = !['/login', '/signup'].includes(location.pathname);
   const showDashboardHeader = !showGlobalLayout && location.pathname !== "/login" && location.pathname !== "/signup";
   return (
     <div className="app-root">
