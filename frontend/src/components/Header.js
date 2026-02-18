@@ -7,23 +7,31 @@ import '../App.css'; // Ensure CSS is imported
 const Header = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [user, setUser] = useState({ name: "Guest", email: "" });
+  const [user, setUser] = useState({ name: "Student", email: "" });
 
-  // 1. Fetch Dynamic User Data on Load
+// 1. Fetch Dynamic User Data on Load
   useEffect(() => {
-    const storedUser = localStorage.getItem("user"); // Assuming you saved user details here
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    // ⬇️ WE CHANGED THIS LINE TO MATCH PROFILE.JS ⬇️
+    const savedName = localStorage.getItem("userName"); 
+    const savedEmail = localStorage.getItem("userEmail");
+
+    if (savedName) {
+      // Use the simple string we found in memory
+      setUser({ 
+        name: savedName, 
+        email: savedEmail || "" 
+      });
     } else {
-        // Fallback if just a token exists, you might want to decode it or fetch profile
-        // For now, let's default to "Student" if data is missing
-        setUser({ name: "Student" }); 
+      // Fallback if no one is logged in
+      setUser({ name: "Student", email: "" });
     }
   }, []);
+ 
 
-  const handleLogout = () => {
+ const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("userName"); // ⬅️ Add this line
+    localStorage.removeItem("userEmail"); // ⬅️ Add this line
     navigate("/login");
   };
 

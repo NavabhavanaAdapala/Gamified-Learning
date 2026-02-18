@@ -21,7 +21,7 @@ import Chatbot from "./components/Chatbot";
 import Lesson from "./components/Lesson";
 import Quiz from "./components/Quiz";
 import Contact from "./components/contact";
-import Footer from "./components/Footer"; 
+import Footer from "./components/footer"; 
 import HelpCenter from "./components/Helpcenter"; 
 import { translations } from "./translations";
 

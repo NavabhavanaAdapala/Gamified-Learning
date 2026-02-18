@@ -4,11 +4,19 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
+
 const authRoutes = require('./routes/auth');
 const lessonsRouter = require('./routes/lessons');
 const chatbotRouter = require('./routes/chatbot');
 
 const app = express();
+// --- ADD THIS BLOCK ---
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ SUCCESS: MongoDB is now connected!"))
+  .catch(err => console.error("❌ ERROR: Could not connect to MongoDB:", err));
+// ----------------------
 
 // global middlewares
 app.use(cors());

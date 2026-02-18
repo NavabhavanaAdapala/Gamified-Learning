@@ -7,7 +7,7 @@ const Footer = ({ onNavigate }) => {
   return (
     <footer className="site-footer">
       <div className="footer-content">
-        
+                                                              
         {/* Column 1: Brand */}
         <div className="footer-col">
           <div className="footer-logo">

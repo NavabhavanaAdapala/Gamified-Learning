@@ -6,7 +6,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area 
 } from "recharts";
 import { useNavigate } from "react-router-dom";
-import Footer from "./Footer";
+import Footer from "./footer";
 import "../App.css";
 
 const Dashboard = () => {
